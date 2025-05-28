@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seunghwan Hwang | Personal website</title>
+  <style>
+    .linka {
+      text-decoration: none;
+      color: red;
+      
+    }
+    .linka:hover {
+      text-decoration: underline;
+    }
+    
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #333;
+      padding: 0 10vw;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-sizing: border-box;
+      height: 60px;
+    }
+    .logo {
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      cursor: pointer;
+      padding: 0;
+      line-height: 60px;
+    }
+    .nav-button {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+      padding: 0;
+      line-height: 60px;
+      z-index: 1001;
+    }
+    .menu {
+      display: flex;
+      gap: 20px;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      flex-shrink: 0;
+      min-width: 0;
+    }
+    .menu a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .menu a:hover {
+      text-decoration: underline;
+    }
+    .menu a.active-menu {
+      color: #FFA07A;
+    }
+    #sections {
+      flex: 1;
+      margin-top: 60px;
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 20px;
+    }
+    section {
+      display: none;
+    }
+    section.active {
+      display: block;
+    }
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      margin-top: auto;
+    }
+
+    #about .content-wrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    #about .profile-image-container {
+      flex-shrink: 0;
+      width: 300px;
+    }
+
+    #about .profile-image-container img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    #about .text-content {
+      flex-grow: 1;
+      min-width: 0;
+    }
+
+    .portfolio-filters {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .portfolio-filters .filter-button {
+      background-color: #f0f0f0;
+      color: #333;
+      border: 1px solid #ccc;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    .portfolio-filters .filter-button:hover {
+      background-color: #e0e0e0;
+    }
+
+    .portfolio-filters .filter-button.active {
+      background-color: #333;
+      color: white;
+      border-color: #333;
+    }
+
+    .portfolio-item {
+      display: none;
+    }
+
+    .portfolio-item.show {
+      display: block;
+    }
+
+    @media (max-width: 770px) {
+        nav {
+            justify-content: space-between;
+            height: 60px;
+        }
+        .logo {
+            line-height: 60px;
+            padding: 0;
+        }
+        .nav-button {
+            display: block;
+            line-height: 60px;
+            padding: 0;
+        }
+        .menu {
+            display: none;
+            flex-direction: column;
+            background-color: #333;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            overflow-y: auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 999;
+            gap: 0;
+        }
+        .menu.active {
+            display: flex;
+        }
+        .menu a {
+            text-align: right;
+            padding: 8px 0;
+            border-bottom: 1px solid #333;
+        }
+        .menu a:last-child {
+            border-bottom: none;
+        }
+      #sections {
+        max-width: 100%;
+        padding: 15px;
+      }
+      #about .content-wrapper {
+        flex-direction: column;
+        align-items: center;
+      }
+      #about .profile-image-container {
+        width: 80%;
+        max-width: 250px;
+        margin-bottom: 15px;
+      }
+      .portfolio-filters {
+            flex-direction: column;
+            align-items: center;
+        }
+        .portfolio-filters .filter-button {
+            width: 80%;
+            max-width: 200px;
+        }
+    }
+
+    @media (max-width: 450px) {
+      #sections {
+        padding: 10px;
+      }
+      #about .profile-image-container {
+        width: 90%;
+        max-width: 200px;
+      }
+      h2 {
+        font-size: 20px;
+      }
+      p {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="logo" onclick="showSection('home')">Hwang Seunghwan</a>
+    <button class="nav-button" id="nav-toggle-button">☰</button>
+    <div class="menu" id="main-menu">
+      <a id="nav-home" href="#" onclick="showSection('home', this)">Home</a>
+      <a href="#" onclick="showSection('about', this)">About</a>
+      <a href="#" onclick="showSection('portfolio', this)">Portfolio</a>
+      <a href="#" onclick="showSection('contact', this)">Contact</a>
+    </div>
+  </nav>
+
+  <div id="sections">
+    <section id="home" class="active">
+      <div style="text-align: center;">
+        <br><br><br>
+      <h2 style="font-size: 25px;">Welcome to my website!</h2>
+      <h2 style="font-size: 20px;">반가워요, 제 이름은 황승환이고 훌륭한 개발자를 꿈꾸고 있어요.</h1>
+      <h2 style="font-size: 20px;">제 페이지를 탐험해 보세요! 상단의 메뉴를 클릭해 저에 대해 알아갈 수 있습니다.</h1>
+      <h1 style="font-size: 90px;">🎉 🥳 🎉</h1>
+      </div>
+    </section>
+    <section id="about">
+      <br><br>
+      <div class="content-wrapper">
+           <div class="profile-image-container">
+           <img src="profileimg.png" alt="Profile Image">    
+           </div>
+         <div class="text-content">
+           <h2>안녕하세요!</h2>
+           <p style="font-size: 17px;">
+             저는 예비 개발자 황승환입니다. 평소 컴퓨터 분야에 대한 깊은 흥미와 애정으로 세명컴퓨터고등학교를 졸업한 뒤, <a href="https://cse.kangwon.ac.kr/cse/index.do" class="linka">
+             강원대학교 컴퓨터공학과</a>에 진학했습니다. 현재 이곳 강원대에서 이론과 실습 수업을 병행하며 개발자로서의 전문 지식을 차근차근 쌓아가고 있으며, 2학년 과정의 다양한 전공 과목들을 통해 프로그래밍 능력은
+             물론, 컴퓨터구조와 알고리즘 같은 컴퓨터공학의 기초를 튼튼히 다지며 실력 향상에 매진하고 있습니다. 저는 SNS, 게임, 앱 등 온라인에서 사람들을 연결하고 새로운 경험을 선사하는
+             디지털 서비스 개발에 깊이 매료되어 있습니다. 언젠가 사람들에게 행복과 재미를 줄 수 있는 대형 디지털 서비스 개발 프로젝트의 일원으로서 활약하는 날까지
+             성실하게 노력할 것입니다.
+           </p>
+         </div>
+      </div>
+    </section>
+    <section id="portfolio">
+      <h2>포트폴리오</h2>
+
+      <div class="portfolio-filters">
+        <button class="filter-button active" data-filter="all">All</button>
+        <button class="filter-button" data-filter="licenses">자격증</button>
+        <button class="filter-button" data-filter="out-of-school">교외 활동</button>
+        <button class="filter-button" data-filter="school">교내 활동</button>
+      </div>
+
+      <br><br>
+      
+      <div class="portfolio-item licenses">
+        <h3>IEQ인터넷윤리자격 2급</h3>
+        <p>2019.11.08에 취득하였으며, IEQ 자격증은 한국생산성본부(KPC)에서 시행하는 자격증으로, 건전한 인터넷 문화 확립을 위한 인터넷 윤리 관련 전문 지식과 실무
+          능력을 평가하고 인증하는 자격입니다. 앞으로 인터넷과 관련된 직무를 맡게되며 도움이될 급변하는 디지털 환경 속에서 정보의 올바른 활용과 윤리적 책임의 중요성을
+          인지해야 한다고 생각해여 이 자격증을 취득하게 되었습니다. 디지털 시민으로서의 책임감을 다하고, 인터넷 상의 실질적인 정보 윤리 지식을 적용하여 시너지를
+          창출하는 데 도움이 될 것이라 생각합니다.</p>
+
+          <hr>
+
+          <a href="https://license.kpc.or.kr/nasec/qlfint/qlfint/selectIeqinfomg.do" class="linka">관련 사이트</a>
+          
+        <br><br>
+      </div>
+
+         <div class="portfolio-item licenses">
+        <h3>정보처리기능사</h3>
+        <p>2021.07.16에 취득하였으며, IT 분야의 가장 기초적인 전문 지식과 실무 능력을 검증하는 국가 기술 자격증입니다. 마치 튼튼한 집을 짓기 위한 기초 공사와도 같다고
+           생각하며, 컴퓨터의 기본 원리와 운영체제, 정보통신, 실제 프로그래밍과 데이터베이스 등에 대한 내용으로 시험 내용이 이루어져 있습니다. 이 자격증은 제게 있어
+            개발자로서 탄탄한 기본기를 다지고, 미래를 위한 작은 발판을 만들어 주었다고 생각합니다.</p>
+
+            <hr>
+
+            <a href="https://www.q-net.or.kr/crf005.do?id=crf00503&jmCd=6921" class="linka">관련 사이트</a>
+            
+        <br><br>
+      </div>
+
+        <div class="portfolio-item licenses">
+        <h3>정보처리산업기사</h3>
+        <p>2021.12.24에 취득하였으며, 정보처리산업기사는 정보처리기능사보다 한 단계 더 심화된 국가 기술 자격증이라고 할 수 있습니다. 기능사가 IT 분야의 기초를 다지는
+          과정이라면, 산업기사는 실제 소프트웨어 개발과 시스템 구축에 필요한 실무 역량을 갖추었는지를 증명하는 자격증이죠. 산업기사는 보통 전문대학 졸업(예정)자, 4년제
+          대학의 절반 이상 수료자, 또는 IT 분야에서 2년 이상의 실무 경력이 있어야 도전할 수 있습니다. 하지만 저는 특성화고등학교의 과정형평가 제도를 이용햐여 당시
+          고등학교 3학년에 시험을 칠 수 있는 자격을 얻게되었고, 이를 성실히 수행해 취득하게 되었습니다.</p>
+          
+          <hr>
+
+            <a href="https://www.q-net.or.kr/crf005.do?id=crf00503&jmCd=2290" class="linka">관련 사이트</a>
+            
+        <br><br>
+      </div>
+
+      <div class="portfolio-item out-of-school">
+        <h3>드림터치포올</h3>
+        <p>중학생 시절, 교육 격차 해소를 목표로 하는 비영리 교육 봉사 단체의 멘토링 프로그램에 맨티로서 참여했었습니다. 단체가 갑작스럽게 해체되어 끝까지 참여하지는
+          못하였지만 훌륭한 대학생 맨토분들 수업을 들을 수 있었고, 여러 유명 인사의 강의를 듣거나 토론에 참여하는 등 유익한 활동을 할 수 있었습니다. 당시 부진했었던
+          성적을 비약적으로 높이고 학술적인 여러 방면에서서 성장할 수 있었던 발판을 마련해 주었다고 생각합니다</p>
+
+          <hr>
+
+            <a href="https://news.mt.co.kr/mtview.php?no=2014102115033747606" class="linka">관련 기사</a>
+            
+        <br><br>
+      </div>
+
+      <div class="portfolio-item out-of-school">
+        <h3>글로벌숙련기술진흥원</h3>
+        <p>고등학교 재학 시절, 글로벌숙련기술진흥원에서 3D 기술 숙련기술전수 과정을 수료했습니다. 이 과정은 ZBrush 소프트웨어를 활용하여 진행되었으며, 구형 모델을
+          변형하거나 인체 및 사물 등 다양한 형태를 3D로 구현하는 실습에 집중했습니다. 덕분에 3D 모델링 및 렌더링과 같은 핵심 소프트웨어 활용 능력을 익힐 수 있었고,
+          복잡한 아이디어를 시각적으로 구체화하는 실질적인 기술 역량을 기를 수 있었습니다. </p>
+
+          <hr>
+
+            <a href="https://meister.hrdkorea.or.kr/sub/7/1/4/20170724170513742100_view.do" class="linka">관련 사이트</a>
+            
+        <br><br>
+      </div>
+
+      <div class="portfolio-item school">
+        <h3>게임개발부</h3>
+        <p>고등학교 재학 시절, 게임 개발 동아리에서 활동하며 소중한 경험을 쌓았습니다. 동아리의 막바지인 2학년 때는 동아리 내에서 팀을 구성하여 직접 게임을 개발하는
+          프로젝트를 진행했는데, 저는 7명으로 구성된 팀에서 개발 담당으로 참여했습니다. 목표는 Unity 엔진을 활용한 간단한 FPS 게임 개발이었습니다. 당시에는 실력이
+          미숙했지만, 담당 선생님의 지도와 에셋 활용, 그리고 적극적인 인터넷 검색을 통해 프로젝트를 성공적으로 마무리할 수 있었습니다. 비록 대중의 시선에서는 다소
+          조잡하게 느껴질 수 있는 결과물이었지만, 팀원들과 협력하여 소프트웨어를 개발해 본 첫 경험이었기에 매우 값지고 의미 있는 시간이었습니다.</p>
+          
+          <hr>
+
+        <br><br>
+      </div>
+      
+      <div class="portfolio-item school">
+        <h3>국외 현장 학습</h3>
+        <p>고등학교 재학 시절, 성적이 우수한 학생들에게 대만으로의 3박4일 국외 현장 학습에 참여할 수 있는 기회가 주어져 참여하게 되었습니다. 당국의 로봇 공장과
+          포모사플라스틱 등 기업을 견학을 하거나 대만의 특성화 고등학교인 구바오고등학교의 수업을 과정을 지켜보는 등 유익한 시간을 보낼 수 있었습니다. 또한
+          지우펀과 타이베이101 등의 명소에 방문하여 대만의 다채로운 문화와 아름다운 풍경을 직접 경험할 수 있었습니다. 당시 학업으로 지쳐있던 저에게 큰 활력과
+          회복의 시간을 선사했고, 기술 학습과 문화 체험이 조화를 이룬 이번 현장 학습은 저의 시야를 넓히고 글로벌 마인드를 함양하는 소중한 계기가 되었습니다.</p>
+
+          <hr>
+
+        <br><br>
+      </div>
+      <br><br>
+    </section>
+    <section id="contact">
+      <h2>Contact</h2>
+
+      <br>
+
+      <h2 style="text-align: center;">저에게 연락하시려면 아래 정보를 이용해 주세요.</h2>
+      <h3>프로젝트 제안, 협업 문의, 또는 기타 궁금한 점이 있으시면 언제든지 편하게 연락 바랍니다.</h3>
+
+      <br>
+
+      <h3><b>연락처_tel:</b>&nbsp;&nbsp;010-8272-7802</h3>
+      <h3><b>이메일_e-mail:</b>&nbsp;&nbsp;hdaegwon@gmail.com</h3>
+      <h3><b>주소_address:</b>&nbsp;&nbsp;강원특별자치도 춘천시 강원대학길 1 퇴계관 322호</h3>
+      <h3><b>인스타그램_instagram:</b>&nbsp;&nbsp;<a class="linka" href="https://www.instagram.com/hwangseunghwan76">hwangseunghwan76</a></h3>
+    </section>
+  </div>
+
+  <footer>
+    &copy; Copyright @ 2025. Seunghwan Hwang All rights reserved.
+  </footer>
+
+  <script>
+    function showSection(sectionId, clickedElement = null) {
+      const sections = document.querySelectorAll("section");
+      sections.forEach(section => section.classList.remove("active"));
+      document.getElementById(sectionId).classList.add("active");
+
+      const menuLinks = document.querySelectorAll(".menu a");
+      menuLinks.forEach(link => link.classList.remove("active-menu"));
+
+      if (clickedElement) {
+        clickedElement.classList.add("active-menu");
+      } else if (sectionId === 'home') {
+        document.getElementById('nav-home').classList.add("active-menu");
+      }
+
+      const mainMenu = document.getElementById('main-menu');
+      if (mainMenu.classList.contains('active')) {
+          mainMenu.classList.remove('active');
+      }
+    }
+
+    window.onload = () => {
+      document.getElementById('nav-home').classList.add("active-menu");
+    };
+
+    const navToggleButton = document.getElementById('nav-toggle-button');
+    const mainMenu = document.getElementById('main-menu');
+
+    navToggleButton.addEventListener('click', () => {
+        mainMenu.classList.toggle('active');
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 770) {
+            mainMenu.classList.remove('active');
+        }
+    });
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterButtons = document.querySelectorAll('.filter-button');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterPortfolioItems('all');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                
+                this.classList.add('active');
+
+                const filterValue = this.getAttribute('data-filter');
+                filterPortfolioItems(filterValue);
+            });
+        });
+
+        function filterPortfolioItems(filter) {
+            portfolioItems.forEach(item => {
+                if (filter === 'all' || item.classList.contains(filter)) {
+                    item.classList.add('show');
+                } else {
+                    item.classList.remove('show');
+                }
+            });
+        }
+        const linkaElements = document.querySelectorAll('.linka');
+        linkaElements.forEach(link => {
+            link.setAttribute('target', '_blank');
+        });
+    });
+  </script>
+</body>
+</html>
